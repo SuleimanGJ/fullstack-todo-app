@@ -14,12 +14,12 @@ const verifyToken = async (req, res, next) => {
 
     try {
         const decoded = jwt.verify(token, JWT_SECRET);
-        console.log("error at decoded" + decoded)
-        req.user = await UserModel.findOne({_id: decoded.id})
+        console.log("error at decoded" + decoded);
+        req.user = await UserModel.findOne({_id: decoded.id}).select("-password");
         next();
         
     } catch (error) {
-        res.status(401).json({ message: "Token is missing" })
+        res.status(401).json({ message: "Token is missing" });
     }
 
 

@@ -73,8 +73,8 @@ const updateTodo = async (req, res) => {
         const {title, description, completed} = req.body;
         if (!title || !description){ return res.json({message: "Invalid inputs"}) }
 
-        if (note.owner.toString() !== userId) {
-            return res.status(403).json({ message: "Unauthorized access to update note!" });
+        if (todo.owner.toString() !== userId) {
+            return res.status(403).json({ message: "Unauthorized access to update todo!" });
         }
         
         todo.title = title;
@@ -105,8 +105,8 @@ const deleteTodo = async (req, res) => {
         const todo = await TodoModel.findById({_id: id});
         if(!todo) return res.status.json({message: "Todo not found"});
 
-        if (note.owner.toString() !== userId) {
-            return res.status(403).json({ message: "Unauthorized access to update note!" });
+        if (todo.owner.toString() !== userId) {
+            return res.status(403).json({ message: "Unauthorized access to update todo!" });
         }
 
         const deletedTodo = await TodoModel.findByIdAndDelete({id})

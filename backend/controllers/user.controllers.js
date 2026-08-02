@@ -10,7 +10,7 @@ const signup = async (req, res) => {
             message: "All fields are required",
         });
     }
-    // console.log(username, email, password)
+    
     try {
         const existingUser = await UserModel.findOne({
             $or: [
@@ -23,8 +23,6 @@ const signup = async (req, res) => {
         if(existingUser){
             return res.status(400).json({ message: "Email or username already exists" })
         }
-        console.log(existingUser) // null ?
-        console.log(existingUser) // null ?
         
         const userInfo = new UserModel({
             username,
@@ -33,11 +31,8 @@ const signup = async (req, res) => {
         })
         
         await userInfo.save();
-        console.log("user info: " + userInfo) // null ?
         const user = userInfo.toObject()
         delete user.password;
-
-        console.log("user info: " + user)
 
         return res.status(201).json({
             data: user,
@@ -142,13 +137,13 @@ const logout = async (req, res) => {
     }
 };
 
-export const getMe = async (req, res) => {
+const getMe = async (req, res) => {
     const user = await UserModel.findById(req.user.id).select("-password");
 
     res.status(200).json(user);
 };
 
-export const updateProfile = async (req, res) => {
+const updateProfile = async (req, res) => {
     const {username} = req.body;
     const updatedUser = await UserModel.findByIdAndUpdate(
         req.user.id,
